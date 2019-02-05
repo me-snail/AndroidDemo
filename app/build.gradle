@@ -1,9 +1,5 @@
 apply plugin: 'com.android.application'
 
-//apply plugin: 'kotlin-android'
-
-//apply plugin: 'kotlin-android-extensions'
-
 android {
     compileSdkVersion 27
     defaultConfig {
@@ -12,16 +8,35 @@ android {
         targetSdkVersion 26
         versionCode 1
         versionName "1.0"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        //testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner getInstrumentation()
         com.android.ddmlib.DdmPreferences.setTimeOut(60000)
     }
     buildTypes {
+        debug {
+            buildConfigField 'String', 'TEST_TAGS', '"' + getTestTags() + '"'
+            buildConfigField 'String', 'TEST_SCENARIO', '"' + getTestScenario() + '"'
+        }
+
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
 }
+
+def getInstrumentation() {
+    project.hasProperty('cucumber') ? 'com.mytaxi.android_demo.cucumber.runner.CucumberTestRunner' : 'android.support.test.runner.AndroidJUnitRunner'
+}
+
+def getTestTags() {
+    project.getProperties().get('tags') ?: ''
+}
+
+def getTestScenario() {
+    project.getProperties().get('scenario') ?: ''
+}
+
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
@@ -45,6 +60,16 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-contrib:3.0.2'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test:rules:1.0.2'
+    // Cucumber
+    androidTestImplementation('info.cukes:cucumber-android:1.2.4') {
+        exclude module: 'cucumber-jvm-deps'
+    }
+    androidTestImplementation('info.cukes:cucumber-picocontainer:1.2.4') {
+        exclude module: 'cucumber-jvm-deps'
+    }
+    androidTestImplementation 'info.cukes:cucumber-jvm-deps:1.0.3'
+    // Screenshots
+    androidTestImplementation 'com.squareup.spoon:spoon-client:1.7.1'
     //implementation"org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlin_version"
 
 }

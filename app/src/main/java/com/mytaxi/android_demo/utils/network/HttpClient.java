@@ -166,7 +166,6 @@ public class HttpClient<main> {
         String[] credentials = new String[2];
         credentials[0] = login.get("username").getAsString();
         credentials[1] = login.get("password").getAsString();
-        System.out.println("Fetched successfully " + credentials[0] + " " + credentials[1]);
         return credentials;
     }
 }

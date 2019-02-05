@@ -1,7 +1,5 @@
 package com.mytaxi.android_demo;
 
-import static com.mytaxi.android_demo.testutils.WaitForView.waitId;
-import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
 
 import static android.support.test.espresso.action.ViewActions.clearText;
@@ -25,27 +23,19 @@ import static android.support.test.espresso.action.ViewActions.click;
 import android.app.Activity;
 import android.app.Instrumentation.ActivityResult;
 import android.content.Intent;
-import android.support.test.espresso.DataInteraction;
-import android.support.test.espresso.NoMatchingViewException;
 import android.support.test.espresso.action.ViewActions;
 import android.support.test.espresso.intent.rule.IntentsTestRule;
-import android.support.test.espresso.matcher.BoundedMatcher;
-import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.support.test.espresso.contrib.DrawerActions;
 import android.support.test.espresso.contrib.NavigationViewActions;
 import android.support.test.rule.GrantPermissionRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.widget.ListAdapter;
-import android.widget.TextView;
 
-import com.mytaxi.android_demo.activities.DriverProfileActivity;
 import com.mytaxi.android_demo.activities.MainActivity;
 import com.mytaxi.android_demo.models.Driver;
 import com.mytaxi.android_demo.utils.network.HttpClient;
 
-import org.hamcrest.Description;
-import org.hamcrest.Matcher;
 import org.junit.FixMethodOrder;
 import org.junit.Rule;
 import org.junit.Test;
@@ -53,19 +43,14 @@ import org.junit.Before;
 import org.junit.After;
 
 import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.anything;
-import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.not;
 import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
-import java.util.List;
 
 @RunWith(AndroidJUnit4.class)
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
@@ -88,7 +73,6 @@ public class MainActivityTest {
     @Before
     public void Test_0_Login_to_mytaxi_app_with_given_credential_info() throws InterruptedException, IOException {
 
-        // invalid seed : "a1f30d"
         String[] credentials = mHttpClient.getUserCredentials("a1f30d446f820665");
         Thread.sleep(this.waitTimeout);
         onView(withId(R.id.edt_username)).check(matches(isDisplayed()));
@@ -159,7 +143,6 @@ public class MainActivityTest {
             System.out.println("No Driver found");
         }
     }
-
 
     @After
     public void Test_3_Logout_from_mytaxi_app(){
